@@ -1,0 +1,80 @@
+<?php
+//1. เชื่อมต่อ database:
+
+//2. query ข้อมูลจากตาราง tb_member:
+$query = "SELECT * FROM member ORDER BY m_id DESC" or die("Error:" . mysqli_error());
+
+// echo $query;
+// exit;
+
+//3.เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
+$result = mysqli_query($condb, $query);
+
+//4 . แสดงข้อมูลที่ query ออกมา โดยใช้ตารางในการจัดข้อมูล:
+echo "<table id='example' class='display table table-bordered table-hover' cellspacing='0'>";
+
+
+  //หัวข้อตาราง
+  echo "
+  <thead>
+  <tr align='center' class='warning'>
+    <th><center>รหัส</center></th>
+    <th><center>รุูปประจำตัว</center></th> 
+    <th><center>ชื่อผู้ใช้</center></th>
+    <th><center>ชื่อ-นามสกุล</center></th>
+    <th><center>ระดับผู้ใช้</center></th>
+    <th><center>เพิ่มเมื่อ</center></th>
+    <th><center>ข้อมูลเพิ่มเติม</center></th>
+    
+  </tr>
+  </thead>
+  ";
+  
+
+  // $i=1;
+  while($row = mysqli_fetch_array($result)) {
+  echo "<tr>";
+    // echo "<td>" .$i .  "</td> ";
+    echo "<td align='center'>" .$row["m_id"] .'.'  ."</td> ";
+    echo "<td align='center'>"."<img src='../mimg/".$row['m_img']."'width=100 height=100'>"."</td>";
+
+    echo "<td align='center'>" .$row["m_username"] .  "</td> ";
+    // echo "<td>" .$row["m_password"] .  "</td> ";
+
+    echo "<td align='center'>"
+      .$row["m_fname"]
+      .' '
+      .$row["m_lname"];
+      // echo '<br/>';
+      // echo 'Level = '.$row["m_level"];
+      echo "</td>";
+
+    echo "<td align='center'>" .$row["m_level"] .  "</td> ";
+    // echo "<td>" .$row["m_email"] .  "</td> ";
+    // echo "<td>" .$row["m_phone"] .  "</td> ";
+    // echo "<td>" .$row["m_line"] .  "</td> ";
+    echo "<td align='center'>" .date('d/m/Y',strtotime($row["m_datesave"])) .  "</td> ";
+
+    //ดูข้อมูล
+    echo "<td align='center'>
+      <a href='member.php?ID=$row[0]&act=edit' class='btn btn-success btn-xs'>เปิด</a>
+      </td> ";
+
+    //Reset Password
+    // echo "<td align='center'>
+    //   <a href='member.php?ID=$row[0]&act=rwd' class='btn btn-primary btn-xs'>rpwd</a>
+    //   </td> ";
+    
+    //ลบข้อมูล
+    // echo "<td align='center'>
+    //   <a href='member_del_db.php?ID=$row[0]' onclick=\"return confirm('Do you want to delete this record? !!!')\" class='btn btn-danger btn-xs'>del</a> </td> ";
+      
+    echo "</tr>";
+    // $i++;
+    }
+
+  echo "</table>";
+
+  //5. close connection
+  mysqli_close($condb);
+  ?>
